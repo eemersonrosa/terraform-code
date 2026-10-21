@@ -42,18 +42,6 @@ variable "ss_resource_group_name" {
   description = "The name of the shared services resource group."
 }
 
-# Shared Storage Account Name
-variable "ss_storage_account_name" {
-  type        = string
-  description = "The name of the shared storage account."
-}
-
-# Shared Services Location
-variable "ss_location" {
-  type        = string
-  description = "The location for the shared services resource group. (e.g., 'eastus')"
-}
-
 # Shared Services Subscription ID
 variable "subscription_id" {
   type        = string

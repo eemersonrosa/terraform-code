@@ -1,0 +1,9 @@
+# Copy to terraform.tfvars (git-ignored) and fill in.
+vnet_address_space   = ["10.10.0.0/16"]
+vnet_subnet          = ["10.10.1.0/24"]
+authorized_ip_ranges = ["203.0.113.10"] # your public IP; the NSG allows only these
+
+# Shared-services subscription that holds the Key Vault with the "ssh-vmss" public key
+subscription_id        = "00000000-0000-0000-0000-000000000000"
+ss_resource_group_name = "rg-shared-services"
+key_vault_name         = "kv-shared-services"

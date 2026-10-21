@@ -10,7 +10,7 @@ handle_error() {
   local exit_code=$?
   local command="$BASH_COMMAND"
   local timestamp=$(date +"%Y-%m-%d %T")
-  echo "[ERROR][$timestamp] Command '$command' exited with status $exit_code: $1" | tee -a "$log_file"
+  echo "[ERROR][$timestamp] Command '$command' exited with status $exit_code: $1"
   exit $exit_code
 }
 
@@ -18,7 +18,7 @@ handle_error() {
 log_message() {
   local message="$1"
   local timestamp=$(date +"%Y-%m-%d %T")
-  echo "[$timestamp] $message" | tee -a "$log_file"
+  echo "[$timestamp] $message"
 }
 
 # Function to update packages
@@ -53,8 +53,10 @@ change_hostname() {
 # Function to add Docker
 add_docker() {
   log_message "Adding Docker repository and installing Docker..."
-  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - || handle_error "Failed to add Docker GPG key."
-  sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" || handle_error "Failed to add Docker repository."
+  # apt-key is deprecated; keep Docker's key in its own keyring.
+  sudo install -m 0755 -d /etc/apt/keyrings
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg || handle_error "Failed to add Docker GPG key."
+  echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null || handle_error "Failed to add Docker repository."
   sudo apt-get update -y || handle_error "Failed to update packages for Docker installation."
   sudo DEBIAN_FRONTEND=noninteractive apt-get install docker-ce docker-ce-cli containerd.io -y || handle_error "Failed to install Docker."
   log_message "Docker repository added, and Docker packages installed successfully."
