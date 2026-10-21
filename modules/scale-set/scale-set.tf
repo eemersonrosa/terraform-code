@@ -11,8 +11,6 @@ resource "azurerm_linux_virtual_machine_scale_set" "linux-vmss" {
   sku                 = "Standard_B1s"
   instances           = 1
   admin_username      = "adminuser"
-  # admin_password                  = var.admin_password
-  # disable_password_authentication = false
 
   admin_ssh_key {
     username   = "adminuser"
@@ -26,7 +24,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "linux-vmss" {
     version   = "latest"
   }
 
-  custom_data = base64encode(file("${path.module}/../storage-account/assets/linux-config.sh"))
+  custom_data = base64encode(file("${path.module}/linux-config.sh"))
 
   os_disk {
     storage_account_type = "Standard_LRS"

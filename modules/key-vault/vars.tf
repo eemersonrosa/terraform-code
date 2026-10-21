@@ -23,11 +23,6 @@ variable "ss_resource_group_name" {
   description = "The name of the shared services resource group."
 }
 
-# variable "ss_location" {
-#   type        = string
-#   description = "The location of the shared services resource group."
-# }
-
 variable "subscription_id" {
   type        = string
   description = "The subscription ID for shared services."

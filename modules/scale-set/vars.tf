@@ -23,11 +23,6 @@ variable "sub_main_id" {
   description = "The ID of the main Azure Subnet"
 }
 
-variable "admin_password" {
-  type        = string
-  description = "The administrator password for VMs (if applicable)"
-}
-
 variable "ssh_key_vmss" {
   type        = string
   description = "SSH KEY stored in KeyVault for VM login"

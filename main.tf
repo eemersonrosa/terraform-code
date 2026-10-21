@@ -72,18 +72,6 @@ module "key-vault" {
   key_vault_name         = var.key_vault_name
 }
 
-# Storage Account Configuration
-module "storage-account" {
-  source               = "./modules/storage-account"
-  resource_group_name  = module.resource-group.main_rg_name
-  resource_prefix      = var.resource_prefix
-  env                  = var.env
-  location             = var.main_location
-  folder_path          = "./assets"
-  authorized_ip_ranges = var.authorized_ip_ranges
-  sub_main_id          = [module.subnet.sub_main_id]
-}
-
 # Scale Set Configuration
 module "scale-set" {
   source              = "./modules/scale-set"
@@ -91,26 +79,6 @@ module "scale-set" {
   resource_prefix     = var.resource_prefix
   env                 = var.env
   location            = var.main_location
-  admin_password      = module.key-vault.vm_password
   sub_main_id         = module.subnet.sub_main_id
   ssh_key_vmss        = module.key-vault.ssh_key_vmss_value
 }
-
-# # SQL Server/DB Configuration
-# module "db" {
-#   source              = "./modules/db"
-#   resource_group_name = module.resource-group.main_rg_name
-#   resource_prefix     = var.resource_prefix
-#   env                 = var.env
-#   location            = var.main_location
-#   sql_password        = module.key-vault.sql_password
-# }
-
-# module "k8s" {
-#   source = "./modules/k8s"
-
-#   resource_group_name = module.resource-group.main_rg_name
-#   resource_prefix     = var.resource_prefix
-#   location            = var.main_location
-#   env                 = var.env
-# }
